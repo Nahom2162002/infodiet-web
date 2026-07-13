@@ -150,6 +150,23 @@ export default function DashboardPage() {
             <div style={styles.header}>
                 <h1 style={styles.title}>🥗 InfoDiet</h1>
                 <p style={styles.subtitle}>Your information diet dashboard</p>
+                <a
+                    href={`/budget?token=${new URLSearchParams(window.location.search).get('token')}`}
+                    style={{
+                    display: 'inline-block',
+                    marginTop: 12,
+                    padding: '8px 20px',
+                    borderRadius: 8,
+                    border: '1px solid rgba(0,200,150,0.3)',
+                    background: 'rgba(0,200,150,0.05)',
+                    color: '#00c896',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    textDecoration: 'none'
+                }}
+                >
+                    ⚙️ Manage Budgets
+                </a>
             </div>
 
             {/* Quality Score */}
