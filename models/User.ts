@@ -1,0 +1,20 @@
+import mongoose, { Schema } from 'mongoose';
+
+const userSchema = new Schema({
+    username:           { type: String, required: true, unique: true },
+    email:              { type: String, required: true, unique: true },
+    password:           { type: String, required: true },
+    passwordHistory:    { type: [String], required: true },
+    resetToken:         { type: String },
+    resetTokenExpiry:   { type: Date },
+    createdAt:          { type: Date, default: Date.now },
+    plan:               { type: String, enum: ['free', 'pro'], default: 'free' },
+    stripeCustomerId:   { type: String },
+    cancelAtPeriodEnd:  { type: Boolean, default: false },
+    hasHadTrial:        { type: Boolean, default: false },
+    trialEnd:           { type: Date, default: null },
+    isTrialing:         { type: Boolean, default: false },
+    strictMode:         { type: Boolean, default: false }
+});
+
+export default mongoose.models.User || mongoose.model('User', userSchema);
