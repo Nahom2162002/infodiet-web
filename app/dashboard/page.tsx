@@ -148,6 +148,9 @@ export default function DashboardPage() {
         <div style={styles.container}>
             {/* Header */}
             <div style={styles.header}>
+                <button onClick={() => window.close()} style={styles.closeLink}>
+                    ← Close & back to extension
+                </button>
                 <h1 style={styles.title}>🥗 InfoDiet</h1>
                 <p style={styles.subtitle}>Your information diet dashboard</p>
                 <a
@@ -424,6 +427,16 @@ const styles: Record<string, React.CSSProperties> = {
     header: {
         textAlign: 'center',
         marginBottom: 32
+    },
+    closeLink: {
+        display: 'block',
+        margin: '0 auto 16px',
+        padding: 0,
+        border: 'none',
+        background: 'transparent',
+        color: '#00c896',
+        fontSize: 14,
+        cursor: 'pointer'
     },
     title: {
         color: 'white',

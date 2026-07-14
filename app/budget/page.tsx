@@ -97,12 +97,17 @@ export default function BudgetPage() {
         <div style={styles.container}>
             {/* Header */}
             <div style={styles.header}>
-                <a
-                    href={`/dashboard?token=${token}`}
-                    style={{ color: '#00c896', fontSize: 14, textDecoration: 'none', display: 'block', marginBottom: 16 }}
-                >
-                    ← Back to Dashboard
-                </a>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                    <a
+                        href={`/dashboard?token=${token}`}
+                        style={{ color: '#00c896', fontSize: 14, textDecoration: 'none' }}
+                    >
+                        ← Back to Dashboard
+                    </a>
+                    <button onClick={() => window.close()} style={styles.closeLink}>
+                        Close & back to extension →
+                    </button>
+                </div>
                 <h1 style={styles.title}>⏱ Daily Budgets</h1>
                 <p style={styles.subtitle}>
                     Set how much time you want to spend on each content category per day.
@@ -245,6 +250,14 @@ const styles: Record<string, React.CSSProperties> = {
     },
     header: {
         marginBottom: 32
+    },
+    closeLink: {
+        padding: 0,
+        border: 'none',
+        background: 'transparent',
+        color: '#00c896',
+        fontSize: 14,
+        cursor: 'pointer'
     },
     title: {
         color: 'white',
