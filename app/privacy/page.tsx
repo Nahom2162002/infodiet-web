@@ -1,0 +1,123 @@
+export default function PrivacyPolicy() {
+  return (
+    <main style={{
+      fontFamily: 'Inter, sans-serif',
+      background: '#0a0f0d',
+      minHeight: '100vh',
+      color: 'white',
+      padding: '60px 24px'
+    }}>
+      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        <a href="/" style={{ color: '#00c896', fontSize: 14, textDecoration: 'none' }}>
+          ← Back to InfoDiet
+        </a>
+
+        <h1 style={{ fontSize: 36, fontWeight: 700, margin: '32px 0 8px' }}>Privacy Policy</h1>
+        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14, marginBottom: 48 }}>
+          Last updated: July 14, 2026
+        </p>
+
+        {[
+          {
+            title: '1. Who We Are',
+            content: 'InfoDiet is a Chrome extension and web service operated by Nahom Ashagrea. We help users track and manage their information consumption online. You can contact us at nahomashagrea2002@gmail.com.'
+          },
+          {
+            title: '2. What Data We Collect',
+            content: `We collect the following information when you use InfoDiet:
+
+- Account information: your username and email address when you create an account
+- Browsing consumption data: the content categories and time spent on websites you visit while InfoDiet is active (we do not store full URLs or page content — only the domain and category)
+- Budget settings: the daily time limits you configure per content category
+- Subscription data: your plan status (free or pro) and Stripe customer ID for billing
+- Technical data: standard server logs including IP address and browser type`
+          },
+          {
+            title: '3. What We Do NOT Collect',
+            content: `InfoDiet is built with privacy in mind. We do not collect:
+
+- The full URLs or page titles of sites you visit
+- The content of any pages you read
+- Your search queries
+- Any personally identifiable browsing history beyond domain-level category tracking`
+          },
+          {
+            title: '4. How We Use Your Data',
+            content: `We use your data to:
+
+- Provide and operate the InfoDiet service
+- Show you your information consumption stats and trends
+- Enforce your daily category budgets
+- Sync your data across devices
+- Process payments via Stripe
+- Send password reset emails when requested
+- Improve the product based on usage patterns
+
+We do not sell your data to third parties. We do not use your data for advertising.`
+          },
+          {
+            title: '5. Data Storage',
+            content: 'Your data is stored securely in MongoDB Atlas hosted in the United States. Passwords are hashed using bcrypt and are never stored in plain text. Payment information is handled entirely by Stripe and never stored on our servers.'
+          },
+          {
+            title: '6. Third Party Services',
+            content: `We use the following third party services:
+
+- Stripe — payment processing (stripe.com/privacy)
+- MongoDB Atlas — database hosting (mongodb.com/legal/privacy-policy)
+- Vercel — hosting and infrastructure (vercel.com/legal/privacy-policy)
+- Resend — transactional email (resend.com/legal/privacy-policy)
+
+Each of these services has their own privacy policy governing how they handle data.`
+          },
+          {
+            title: '7. Data Retention',
+            content: 'We retain your account and consumption data for as long as your account is active. Consumption data older than 90 days may be aggregated and anonymized. If you delete your account, your personal data will be removed within 30 days.'
+          },
+          {
+            title: '8. Your Rights',
+            content: `You have the right to:
+
+- Access the personal data we hold about you
+- Request correction of inaccurate data
+- Request deletion of your account and associated data
+- Export your consumption data
+
+To exercise any of these rights, contact us at nahomashagrea2002@gmail.com.`
+          },
+          {
+            title: '9. Cookies and Local Storage',
+            content: 'InfoDiet does not use cookies for tracking or advertising. The Chrome extension uses browser local storage solely to store your authentication token, today\'s consumption data, and budget settings locally on your device for performance purposes.'
+          },
+          {
+            title: '10. Children\'s Privacy',
+            content: 'InfoDiet is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such information, please contact us and we will delete it promptly.'
+          },
+          {
+            title: '11. Changes to This Policy',
+            content: 'We may update this privacy policy from time to time. We will notify users of significant changes via email. Continued use of InfoDiet after changes constitutes acceptance of the updated policy.'
+          },
+          {
+            title: '12. Contact',
+            content: 'If you have any questions about this privacy policy, contact us at nahomashagrea2002@gmail.com.'
+          }
+        ].map((section, i) => (
+          <div key={i} style={{ marginBottom: 40 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12, color: 'white' }}>
+              {section.title}
+            </h2>
+            <p style={{
+              color: 'rgba(255,255,255,0.6)',
+              fontSize: 15,
+              lineHeight: 1.8,
+              whiteSpace: 'pre-line',
+              margin: 0
+            }}>
+              {section.content}
+            </p>
+          </div>
+        ))}
+      </div>
+    </main>
+  );
+}
