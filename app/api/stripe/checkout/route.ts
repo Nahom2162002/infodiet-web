@@ -18,23 +18,27 @@ export async function POST(req: NextRequest) {
     try {
         await connectDB();
         const user = await getUserFromRequest(req);
-        
         if (!user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
         }
 
-        let customerId = user.stripeCustomerId;
+        // Already pro — no need to charge again
+        if (user.plan === 'pro') {
+            return NextResponse.json({ error: 'Already on Pro plan' }, { status: 400, headers: corsHeaders });
+        }
 
+        // Create Stripe customer if one doesn't exist
+        let customerId = user.stripeCustomerId;
         if (!customerId) {
             const customer = await stripe.customers.create({
                 email: user.email,
                 metadata: { userId: user._id.toString() }
             });
             customerId = customer.id;
-            
             await User.findByIdAndUpdate(user._id, { stripeCustomerId: customer.id });
         }
 
+        // Create one-time payment session
         const session = await stripe.checkout.sessions.create({
             customer: customerId,
             line_items: [{
@@ -48,6 +52,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ url: session.url }, { headers: corsHeaders });
     } catch (err: any) {
+        console.log('Checkout error:', err.message);
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
     }
 }
