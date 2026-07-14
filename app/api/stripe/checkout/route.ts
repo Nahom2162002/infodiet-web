@@ -35,27 +35,13 @@ export async function POST(req: NextRequest) {
             await User.findByIdAndUpdate(user._id, { stripeCustomerId: customer.id });
         }
 
-        const eligibleForTrial = !user.hasHadTrial;
-
         const session = await stripe.checkout.sessions.create({
             customer: customerId,
-            payment_method_types: ['card'],
             line_items: [{
                 price: process.env.STRIPE_PRICE_ID!,
                 quantity: 1
             }],
-            mode: 'subscription',
-            ...(eligibleForTrial ? {
-                subscription_data: {
-                    trial_period_days: 7,
-                    trial_settings: {
-                        end_behavior: {
-                            missing_payment_method: 'cancel' as const
-                        }
-                    }
-                },
-                payment_method_collection: 'if_required' as const,
-            } : {}),
+            mode: 'payment',
             success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
         });

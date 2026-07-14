@@ -35,16 +35,13 @@ export async function POST(req: NextRequest) {
             await mongoose.connect(process.env.MONGODB_URI!);
         }
 
-        if (event.type === 'invoice.paid') {
-            const invoice = event.data.object as any;
-            console.log('invoice.paid - customer:', invoice.customer);
-
-            const updated = await User.findOneAndUpdate(
-                { stripeCustomerId: invoice.customer },
-                { $set: { plan: 'pro', cancelAtPeriodEnd: false } },
+        if (event.type === 'checkout.session.completed') {
+            const session = event.data.object as any;
+            await User.findOneAndUpdate(
+                { stripeCustomerId: session.customer },
+                { $set: { plan: 'pro' } },
                 { returnDocument: 'after' }
             );
-            console.log('invoice.paid - updated:', updated?.username, updated?.plan);
         }
 
         if (event.type === 'customer.subscription.updated') {
