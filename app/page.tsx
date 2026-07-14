@@ -416,10 +416,10 @@ export default function LandingPage() {
             </div>
             <h3 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Pro</h3>
             <p style={{ fontSize: 36, fontWeight: 800, margin: '0 0 4px' }}>
-              $19.99
+              $9.99
             </p>
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, margin: '0 0 28px' }}>
-              One-time payment, lifetime access 
+              Launch price, lifetime access (price goes up soon)
             </p>
             {[
               'Everything in Free',
