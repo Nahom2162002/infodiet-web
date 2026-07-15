@@ -1,327 +1,452 @@
 import Link from 'next/link';
+import Image from 'next/image';
+
+const categories = [
+  { label: 'News & Politics', hue: 25, pct: 62 },
+  { label: 'Social Media', hue: 85, pct: 78 },
+  { label: 'Entertainment', hue: 50, pct: 55 },
+  { label: 'Educational', hue: 150, pct: 41 },
+  { label: 'Shopping', hue: 300, pct: 20 },
+  { label: 'Forums', hue: 230, pct: 33 },
+  { label: 'Gaming', hue: 340, pct: 15 },
+  { label: 'Other', hue: 0, pct: 8 },
+].map((c) => ({
+  ...c,
+  color: `oklch(65% 0.09 ${c.hue})`,
+  borderColor: `oklch(65% 0.09 ${c.hue} / 0.35)`,
+}));
+
+const topCategories = categories.slice(0, 4);
+
+const features = [
+  {
+    title: 'Automatic Tracking',
+    desc: 'InfoDiet quietly notices how much time you spend in each category as you browse — no manual logging required.',
+    free: true,
+  },
+  {
+    title: 'Information Quality Score',
+    desc: 'See your weekly ratio of educational vs. entertainment content as one simple score.',
+    free: false,
+  },
+  {
+    title: 'Daily Budgets',
+    desc: 'Set gentle daily limits per category. InfoDiet nudges you when you hit one, with a 10-minute grace window.',
+    free: false,
+  },
+  {
+    title: 'Trend Dashboard',
+    desc: 'See your daily and weekly patterns with simple charts, so you know which categories are dominating your attention.',
+    free: false,
+  },
+  {
+    title: 'Budget Alerts',
+    desc: 'A quiet nudge the moment you approach or exceed your daily limit for any category.',
+    free: false,
+  },
+  {
+    title: 'Cross-Device Sync',
+    desc: 'Your consumption data and budgets sync across all your Chrome browsers automatically.',
+    free: false,
+  },
+].map((f) => ({
+  ...f,
+  tagLabel: f.free ? 'FREE' : 'PRO',
+  tagBg: f.free ? 'oklch(96% 0.008 90 / 0.1)' : 'oklch(58% 0.13 155 / 0.15)',
+  tagColor: f.free ? 'oklch(96% 0.008 90 / 0.5)' : 'oklch(58% 0.13 155)',
+  tagBorder: f.free
+    ? '1px solid oklch(96% 0.008 90 / 0.1)'
+    : '1px solid oklch(58% 0.13 155 / 0.3)',
+}));
+
+const steps = [
+  {
+    step: '1',
+    title: 'Install InfoDiet',
+    desc: 'Add InfoDiet to Chrome for free. Create a free account to sync your data.',
+  },
+  {
+    step: '2',
+    title: 'Browse normally',
+    desc: 'InfoDiet runs quietly in the background, categorizing every site you visit and tracking your time.',
+  },
+  {
+    step: '3',
+    title: 'See your information diet',
+    desc: "Open the extension anytime for today's breakdown, or the dashboard for weekly trends and your quality score.",
+  },
+  {
+    step: '4',
+    title: 'Set healthy limits',
+    desc: 'Upgrade to Pro to set daily budgets per category, with gentle nudges when you approach them.',
+  },
+];
+
+const freeItems = ['Automatic content tracking', 'All 8 content categories', "Today's consumption view"];
+const proItems = [
+  'Everything in Free',
+  'Daily budgets per category',
+  'Gentle budget nudges',
+  'Information quality score',
+  'Weekly trend dashboard',
+  'Budget alerts',
+  'Cross-device sync',
+];
+
+const bg = 'oklch(20% 0.025 155)';
+const fg = 'oklch(96% 0.008 90)';
+const accent = 'oklch(58% 0.13 155)';
+const accentDark = 'oklch(18% 0.02 155)';
+const card = 'oklch(24% 0.02 155)';
+const serif = 'var(--font-lora), serif';
+const sans = 'var(--font-inter), sans-serif';
 
 export default function LandingPage() {
   return (
-    <main style={{
-      fontFamily: 'Inter, sans-serif',
-      background: 'radial-gradient(circle at 50% 0%, #0a2e1a, #0d0d0d)',
-      minHeight: '100vh',
-      color: 'white'
-    }}>
-
-      {/* Nav */}
-      <nav style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '20px 40px',
-        borderBottom: '1px solid rgba(0,200,150,0.08)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 24 }}>🥗</span>
-          <span style={{ fontSize: 20, fontWeight: 700 }}>InfoDiet</span>
+    <main style={{ fontFamily: sans, background: bg, minHeight: '100vh', color: fg }}>
+      <nav
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '20px 48px',
+          borderBottom: '1px solid oklch(96% 0.008 90 / 0.08)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Image
+            src="/InfoDietIcon-32x32.png"
+            alt="InfoDiet"
+            width={22}
+            height={22}
+            style={{ borderRadius: '50%', display: 'inline-block' }}
+          />
+          <span style={{ fontFamily: serif, fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em' }}>
+            InfoDiet
+          </span>
         </div>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-          <a href="#features" style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, textDecoration: 'none' }}>Features</a>
-          <a href="#how-it-works" style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, textDecoration: 'none' }}>How it works</a>
-          <a href="#pricing" style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, textDecoration: 'none' }}>Pricing</a>
+        <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
+          <a href="#features" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
+            Features
+          </a>
+          <a href="#how-it-works" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
+            How it works
+          </a>
+          <a href="#pricing" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
+            Pricing
+          </a>
           <a
             href="https://chrome.google.com/webstore"
             target="_blank"
             rel="noreferrer"
             style={{
-              background: 'linear-gradient(135deg, #00c896, #00a57a)',
-              color: 'white',
-              padding: '8px 18px',
+              background: accent,
+              color: accentDark,
+              padding: '9px 20px',
               borderRadius: 8,
               fontSize: 14,
               fontWeight: 600,
-              textDecoration: 'none'
+              textDecoration: 'none',
             }}
           >
-            Add to Chrome 
+            Add to Chrome
           </a>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section style={{
-        textAlign: 'center',
-        padding: '100px 24px 80px',
-        maxWidth: 760,
-        margin: '0 auto'
-      }}>
-        <div style={{
-          display: 'inline-block',
-          background: 'rgba(0,200,150,0.1)',
-          border: '1px solid rgba(0,200,150,0.3)',
-          borderRadius: 20,
-          padding: '6px 16px',
-          fontSize: 13,
-          color: '#00c896',
-          marginBottom: 24
-        }}>
-          Chrome Extension — Free to install
-        </div>
-        <h1 style={{
-          fontSize: 52,
-          fontWeight: 800,
-          lineHeight: 1.15,
-          margin: '0 0 24px',
-          background: 'linear-gradient(135deg, #ffffff, rgba(255,255,255,0.7))',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent'
-        }}>
-          Your brain deserves<br />a healthy diet.
-        </h1>
-        <p style={{
-          fontSize: 18,
-          color: 'rgba(255,255,255,0.55)',
-          lineHeight: 1.7,
-          margin: '0 0 40px',
-          maxWidth: 560,
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}>
-          InfoDiet tracks how you consume information online and helps you
-          set healthy limits — so you spend more time learning and less time
-          mindlessly scrolling.
-        </p>
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a
-            href="https://chrome.google.com/webstore"
-            target="_blank"
-            rel="noreferrer"
+      <section
+        style={{
+          maxWidth: 1120,
+          margin: '0 auto',
+          padding: '88px 48px 40px',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 64,
+          alignItems: 'center',
+        }}
+      >
+        <div>
+          <div
             style={{
-              background: 'linear-gradient(135deg, #00c896, #00a57a)',
-              color: 'white',
-              padding: '14px 32px',
-              borderRadius: 10,
-              fontSize: 16,
-              fontWeight: 700,
-              textDecoration: 'none',
-              display: 'inline-block'
+              display: 'inline-block',
+              background: 'oklch(58% 0.13 155 / 0.12)',
+              border: '1px solid oklch(58% 0.13 155 / 0.3)',
+              borderRadius: 20,
+              padding: '6px 16px',
+              fontSize: 13,
+              color: accent,
+              marginBottom: 24,
             }}
           >
-            Add to Chrome 
-          </a>
-          <a
-            href="#how-it-works"
+            A gentler way to notice your screen habits
+          </div>
+          <h1
             style={{
-              background: 'rgba(255,255,255,0.07)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: 'white',
-              padding: '14px 32px',
-              borderRadius: 10,
-              fontSize: 16,
+              fontFamily: serif,
+              fontSize: 46,
               fontWeight: 600,
-              textDecoration: 'none',
-              display: 'inline-block'
+              lineHeight: 1.18,
+              margin: '0 0 22px',
+              color: 'oklch(97% 0.006 90)',
             }}
           >
-            See how it works
-          </a>
+            Feed your mind
+            <br />
+            the way you&apos;d feed your body.
+          </h1>
+          <p
+            style={{
+              fontSize: 17,
+              color: 'oklch(96% 0.008 90 / 0.6)',
+              lineHeight: 1.7,
+              margin: '0 0 36px',
+              maxWidth: 460,
+            }}
+          >
+            InfoDiet quietly notices what you read, watch, and scroll — then
+            helps you nudge the balance toward what actually nourishes you.
+            No shaming, no lockouts. Just a clearer picture, one day at a time.
+          </p>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <a
+              href="https://chrome.google.com/webstore"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                background: accent,
+                color: accentDark,
+                padding: '14px 30px',
+                borderRadius: 10,
+                fontSize: 15,
+                fontWeight: 700,
+                textDecoration: 'none',
+                display: 'inline-block',
+              }}
+            >
+              Add to Chrome — it&apos;s free
+            </a>
+            <a
+              href="#how-it-works"
+              style={{
+                background: 'oklch(96% 0.008 90 / 0.06)',
+                border: '1px solid oklch(96% 0.008 90 / 0.12)',
+                color: fg,
+                padding: '14px 30px',
+                borderRadius: 10,
+                fontSize: 15,
+                fontWeight: 600,
+                textDecoration: 'none',
+                display: 'inline-block',
+              }}
+            >
+              See how it works
+            </a>
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: card,
+            border: '1px solid oklch(96% 0.008 90 / 0.08)',
+            borderRadius: 20,
+            padding: 28,
+            boxShadow: '0 24px 60px oklch(10% 0.02 155 / 0.4)',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <span style={{ fontSize: 13, color: 'oklch(96% 0.008 90 / 0.5)' }}>This week&apos;s information diet</span>
+            <span style={{ fontSize: 11, color: 'oklch(96% 0.008 90 / 0.35)' }}>Sample data</span>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              gap: 24,
+              alignItems: 'center',
+              marginBottom: 24,
+              paddingBottom: 24,
+              borderBottom: '1px solid oklch(96% 0.008 90 / 0.08)',
+            }}
+          >
+            <div
+              style={{
+                width: 92,
+                height: 92,
+                borderRadius: '50%',
+                background: `conic-gradient(${accent} 0deg 259deg, oklch(96% 0.008 90 / 0.08) 259deg 360deg)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  width: 68,
+                  height: 68,
+                  borderRadius: '50%',
+                  background: card,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span style={{ fontSize: 20, fontWeight: 700, fontFamily: serif }}>72</span>
+                <span style={{ fontSize: 9, color: 'oklch(96% 0.008 90 / 0.4)', letterSpacing: '0.03em' }}>
+                  QUALITY
+                </span>
+              </div>
+            </div>
+            <div>
+              <p style={{ margin: '0 0 4px', fontSize: 14, fontWeight: 600 }}>Nourishing week</p>
+              <p style={{ margin: 0, fontSize: 13, color: 'oklch(96% 0.008 90 / 0.5)', lineHeight: 1.6 }}>
+                Up 8 points from last week — more educational reading, less scrolling after 9pm.
+              </p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {topCategories.map((c) => (
+              <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0, background: c.color }} />
+                <span style={{ fontSize: 12, color: 'oklch(96% 0.008 90 / 0.6)', width: 108, flexShrink: 0 }}>
+                  {c.label}
+                </span>
+                <div
+                  style={{
+                    flex: 1,
+                    height: 6,
+                    borderRadius: 3,
+                    background: 'oklch(96% 0.008 90 / 0.08)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div style={{ height: '100%', borderRadius: 3, width: `${c.pct}%`, background: c.color }} />
+                </div>
+                <span style={{ fontSize: 11, color: 'oklch(96% 0.008 90 / 0.4)', width: 28, textAlign: 'right' }}>
+                  {c.pct}%
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Social proof */}
-      <section style={{
-        textAlign: 'center',
-        padding: '0 24px 80px',
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 13
-      }}>
-        Track your information diet across 8 content categories
+      <section style={{ textAlign: 'center', padding: '40px 24px 72px', color: 'oklch(96% 0.008 90 / 0.35)', fontSize: 13 }}>
+        Tracked quietly across 8 everyday content categories
       </section>
 
-      {/* Category pills */}
-      <section style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 10,
-        justifyContent: 'center',
-        padding: '0 24px 80px',
-        maxWidth: 700,
-        margin: '0 auto'
-      }}>
-        {[
-          { emoji: '📰', label: 'News & Politics', color: '#ff6b6b' },
-          { emoji: '📱', label: 'Social Media', color: '#ffd93d' },
-          { emoji: '🎬', label: 'Entertainment', color: '#ff922b' },
-          { emoji: '📚', label: 'Educational', color: '#00c896' },
-          { emoji: '🛍️', label: 'Shopping', color: '#cc5de8' },
-          { emoji: '💬', label: 'Forums', color: '#339af0' },
-          { emoji: '🎮', label: 'Gaming', color: '#f06595' },
-          { emoji: '🌐', label: 'Other', color: 'rgba(255,255,255,0.3)' },
-        ].map((cat, i) => (
-          <div key={i} style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '8px 16px',
-            borderRadius: 20,
-            background: 'rgba(255,255,255,0.04)',
-            border: `1px solid ${cat.color}33`,
-            fontSize: 13,
-            color: 'rgba(255,255,255,0.7)'
-          }}>
-            <span>{cat.emoji}</span>
-            <span>{cat.label}</span>
+      <section
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 10,
+          justifyContent: 'center',
+          padding: '0 24px 88px',
+          maxWidth: 760,
+          margin: '0 auto',
+        }}
+      >
+        {categories.map((c) => (
+          <div
+            key={c.label}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '8px 16px',
+              borderRadius: 20,
+              background: 'oklch(96% 0.008 90 / 0.04)',
+              border: `1px solid ${c.borderColor}`,
+              fontSize: 13,
+              color: 'oklch(96% 0.008 90 / 0.7)',
+            }}
+          >
+            <span style={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0, background: c.color }} />
+            <span>{c.label}</span>
           </div>
         ))}
       </section>
 
-      {/* Features */}
-      <section id="features" style={{
-        maxWidth: 1000,
-        margin: '0 auto',
-        padding: '80px 24px'
-      }}>
-        <h2 style={{
-          textAlign: 'center',
-          fontSize: 36,
-          fontWeight: 700,
-          marginBottom: 16
-        }}>
-          Everything you need for a healthy information diet
+      <section id="features" style={{ maxWidth: 1040, margin: '0 auto', padding: '72px 24px' }}>
+        <h2 style={{ textAlign: 'center', fontFamily: serif, fontSize: 32, fontWeight: 600, marginBottom: 14 }}>
+          A calmer relationship with your screen
         </h2>
-        <p style={{
-          textAlign: 'center',
-          color: 'rgba(255,255,255,0.5)',
-          fontSize: 16,
-          marginBottom: 56,
-          maxWidth: 500,
-          margin: '0 auto 56px'
-        }}>
-          Free to start. Upgrade when you're ready for the full toolkit.
+        <p
+          style={{
+            textAlign: 'center',
+            color: 'oklch(96% 0.008 90 / 0.5)',
+            fontSize: 16,
+            marginBottom: 52,
+            maxWidth: 480,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          Free to start. Upgrade when you&apos;re ready for the full toolkit.
         </p>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 20
-        }}>
-          {[
-            {
-              emoji: '📊',
-              title: 'Automatic Tracking',
-              desc: 'InfoDiet silently tracks how much time you spend on each category of content as you browse — no manual logging required.',
-              free: true
-            },
-            {
-              emoji: '🎯',
-              title: 'Information Quality Score',
-              desc: 'See your weekly ratio of educational vs entertainment content as a single score. Know at a glance how healthy your information diet is.',
-              free: false
-            },
-            {
-              emoji: '⏱',
-              title: 'Daily Budgets',
-              desc: 'Set daily time limits per category. InfoDiet blocks access when you hit your limit and lets you override for 10 minutes if needed.',
-              free: false
-            },
-            {
-              emoji: '📈',
-              title: 'Trend Dashboard',
-              desc: 'See your daily and weekly consumption patterns with charts. Understand which categories are dominating your attention.',
-              free: false
-            },
-            {
-              emoji: '🚨',
-              title: 'Budget Alerts',
-              desc: 'Get notified the moment you approach or exceed your daily limit for any content category.',
-              free: false
-            },
-            {
-              emoji: '🔄',
-              title: 'Cross-Device Sync',
-              desc: 'Your consumption data and budgets sync across all your Chrome browsers automatically.',
-              free: false
-            }
-          ].map((f, i) => (
-            <div key={i} style={{
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.07)',
-              borderRadius: 16,
-              padding: '28px 24px'
-            }}>
-              <p style={{ fontSize: 32, margin: '0 0 12px' }}>{f.emoji}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <h3 style={{ fontSize: 17, fontWeight: 700, margin: 0 }}>{f.title}</h3>
-                <span style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  padding: '2px 8px',
-                  borderRadius: 20,
-                  background: f.free ? 'rgba(255,255,255,0.1)' : 'rgba(0,200,150,0.15)',
-                  color: f.free ? 'rgba(255,255,255,0.5)' : '#00c896',
-                  border: f.free ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,200,150,0.3)'
-                }}>
-                  {f.free ? 'FREE' : 'PRO'}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+          {features.map((f) => (
+            <div
+              key={f.title}
+              style={{
+                background: card,
+                border: '1px solid oklch(96% 0.008 90 / 0.07)',
+                borderRadius: 16,
+                padding: '26px 24px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0, background: accent }} />
+                <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>{f.title}</h3>
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    padding: '2px 8px',
+                    borderRadius: 20,
+                    background: f.tagBg,
+                    color: f.tagColor,
+                    border: f.tagBorder,
+                  }}
+                >
+                  {f.tagLabel}
                 </span>
               </div>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
-                {f.desc}
-              </p>
+              <p style={{ color: 'oklch(96% 0.008 90 / 0.5)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="how-it-works" style={{
-        maxWidth: 700,
-        margin: '0 auto',
-        padding: '80px 24px',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 16 }}>
-          How it works
-        </h2>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, marginBottom: 56 }}>
+      <section id="how-it-works" style={{ maxWidth: 680, margin: '0 auto', padding: '72px 24px', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: serif, fontSize: 32, fontWeight: 600, marginBottom: 14 }}>How it works</h2>
+        <p style={{ color: 'oklch(96% 0.008 90 / 0.5)', fontSize: 16, marginBottom: 52 }}>
           Up and running in under a minute
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, textAlign: 'left' }}>
-          {[
-            {
-              step: '1',
-              title: 'Install InfoDiet',
-              desc: 'Add InfoDiet to Chrome for free from the Chrome Web Store. Create a free account to sync your data.'
-            },
-            {
-              step: '2',
-              title: 'Browse normally',
-              desc: 'InfoDiet runs silently in the background, automatically categorizing every site you visit and tracking your time.'
-            },
-            {
-              step: '3',
-              title: 'See your information diet',
-              desc: 'Open the extension anytime to see today\'s breakdown. Open the dashboard for your weekly trends and quality score.'
-            },
-            {
-              step: '4',
-              title: 'Set healthy limits',
-              desc: 'Upgrade to Pro to set daily budgets per category. InfoDiet will block access when you hit your limit.'
-            }
-          ].map((s, i) => (
-            <div key={i} style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-              <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #00c896, #00a57a)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                fontSize: 16,
-                flexShrink: 0
-              }}>
+          {steps.map((s) => (
+            <div key={s.step} style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: '50%',
+                  background: accent,
+                  color: accentDark,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 700,
+                  fontSize: 15,
+                  flexShrink: 0,
+                  fontFamily: serif,
+                }}
+              >
                 {s.step}
               </div>
               <div>
-                <h3 style={{ fontSize: 17, fontWeight: 700, margin: '0 0 6px' }}>{s.title}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 6px' }}>{s.title}</h3>
+                <p style={{ color: 'oklch(96% 0.008 90 / 0.5)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
                   {s.desc}
                 </p>
               </div>
@@ -330,46 +455,42 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" style={{
-        maxWidth: 700,
-        margin: '0 auto',
-        padding: '80px 24px'
-      }}>
-        <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 700, marginBottom: 16 }}>
+      <section id="pricing" style={{ maxWidth: 700, margin: '0 auto', padding: '72px 24px' }}>
+        <h2 style={{ textAlign: 'center', fontFamily: serif, fontSize: 32, fontWeight: 600, marginBottom: 14 }}>
           Simple pricing
         </h2>
-        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 16, marginBottom: 56 }}>
-          Start free. Upgrade when you're ready.
+        <p style={{ textAlign: 'center', color: 'oklch(96% 0.008 90 / 0.5)', fontSize: 16, marginBottom: 52 }}>
+          Start free. Upgrade when you&apos;re ready.
         </p>
-
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          {/* Free */}
-          <div style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 16,
-            padding: '32px 28px'
-          }}>
-            <h3 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Free</h3>
-            <p style={{ fontSize: 36, fontWeight: 800, margin: '0 0 4px' }}>$0</p>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, margin: '0 0 28px' }}>Forever free</p>
-            {[
-              'Automatic content tracking',
-              'All 8 content categories',
-              'Today\'s consumption view'
-            ].map((f, i) => (
-              <p key={i} style={{
-                color: 'rgba(255,255,255,0.7)',
-                fontSize: 14,
-                margin: '0 0 10px',
-                display: 'flex',
-                gap: 8,
-                alignItems: 'center'
-              }}>
-                <span style={{ color: '#00c896' }}>✓</span> {f}
-              </p>
-            ))}
+          <div
+            style={{
+              background: card,
+              border: '1px solid oklch(96% 0.008 90 / 0.08)',
+              borderRadius: 16,
+              padding: '32px 28px',
+            }}
+          >
+            <h3 style={{ fontSize: 19, fontWeight: 700, margin: '0 0 8px' }}>Free</h3>
+            <p style={{ fontSize: 34, fontWeight: 700, margin: '0 0 4px', fontFamily: serif }}>$0</p>
+            <p style={{ color: 'oklch(96% 0.008 90 / 0.4)', fontSize: 13, margin: '0 0 26px' }}>Forever free</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {freeItems.map((item) => (
+                <p
+                  key={item}
+                  style={{
+                    color: 'oklch(96% 0.008 90 / 0.7)',
+                    fontSize: 14,
+                    margin: 0,
+                    display: 'flex',
+                    gap: 8,
+                    alignItems: 'center',
+                  }}
+                >
+                  <span style={{ color: accent }}>✓</span> {item}
+                </p>
+              ))}
+            </div>
             <a
               href="https://chrome.google.com/webstore"
               target="_blank"
@@ -377,70 +498,68 @@ export default function LandingPage() {
               style={{
                 display: 'block',
                 textAlign: 'center',
-                marginTop: 28,
-                padding: '12px',
+                marginTop: 26,
+                padding: 12,
                 borderRadius: 8,
-                border: '1px solid rgba(255,255,255,0.15)',
-                color: 'white',
+                border: '1px solid oklch(96% 0.008 90 / 0.15)',
+                color: fg,
                 textDecoration: 'none',
                 fontSize: 14,
-                fontWeight: 600
+                fontWeight: 600,
               }}
             >
               Get started free
             </a>
           </div>
 
-          {/* Pro */}
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(0,200,150,0.08), rgba(0,165,122,0.05))',
-            border: '1px solid rgba(0,200,150,0.25)',
-            borderRadius: 16,
-            padding: '32px 28px',
-            position: 'relative'
-          }}>
-            <div style={{
-              position: 'absolute',
-              top: -12,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'linear-gradient(135deg, #00c896, #00a57a)',
-              color: 'white',
-              fontSize: 11,
-              fontWeight: 700,
-              padding: '4px 14px',
-              borderRadius: 20,
-              whiteSpace: 'nowrap'
-            }}>
+          <div
+            style={{
+              background: 'oklch(26% 0.025 155)',
+              border: '1px solid oklch(58% 0.13 155 / 0.3)',
+              borderRadius: 16,
+              padding: '32px 28px',
+              position: 'relative',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                top: -12,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: accent,
+                color: accentDark,
+                fontSize: 11,
+                fontWeight: 700,
+                padding: '4px 14px',
+                borderRadius: 20,
+                whiteSpace: 'nowrap',
+              }}
+            >
               MOST POPULAR
             </div>
-            <h3 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Pro</h3>
-            <p style={{ fontSize: 36, fontWeight: 800, margin: '0 0 4px' }}>
-              $9.99
+            <h3 style={{ fontSize: 19, fontWeight: 700, margin: '0 0 8px' }}>Pro</h3>
+            <p style={{ fontSize: 34, fontWeight: 700, margin: '0 0 4px', fontFamily: serif }}>$9.99</p>
+            <p style={{ color: 'oklch(96% 0.008 90 / 0.4)', fontSize: 13, margin: '0 0 26px' }}>
+              Launch price, lifetime access
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, margin: '0 0 28px' }}>
-              Launch price, lifetime access (price goes up soon)
-            </p>
-            {[
-              'Everything in Free',
-              'Daily budgets per category',
-              'Budget blocking',
-              'Information quality score',
-              'Weekly trend dashboard',
-              'Budget alerts',
-              'Cross-device sync'
-            ].map((f, i) => (
-              <p key={i} style={{
-                color: 'rgba(255,255,255,0.7)',
-                fontSize: 14,
-                margin: '0 0 10px',
-                display: 'flex',
-                gap: 8,
-                alignItems: 'center'
-              }}>
-                <span style={{ color: '#00c896' }}>✓</span> {f}
-              </p>
-            ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {proItems.map((item) => (
+                <p
+                  key={item}
+                  style={{
+                    color: 'oklch(96% 0.008 90 / 0.7)',
+                    fontSize: 14,
+                    margin: 0,
+                    display: 'flex',
+                    gap: 8,
+                    alignItems: 'center',
+                  }}
+                >
+                  <span style={{ color: accent }}>✓</span> {item}
+                </p>
+              ))}
+            </div>
             <a
               href="https://chrome.google.com/webstore"
               target="_blank"
@@ -448,14 +567,14 @@ export default function LandingPage() {
               style={{
                 display: 'block',
                 textAlign: 'center',
-                marginTop: 28,
-                padding: '12px',
+                marginTop: 26,
+                padding: 12,
                 borderRadius: 8,
-                background: 'linear-gradient(135deg, #00c896, #00a57a)',
-                color: 'white',
+                background: accent,
+                color: accentDark,
                 textDecoration: 'none',
                 fontSize: 14,
-                fontWeight: 700
+                fontWeight: 700,
               }}
             >
               Upgrade to Pro
@@ -464,69 +583,58 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section style={{
-        textAlign: 'center',
-        padding: '80px 24px 100px',
-        maxWidth: 600,
-        margin: '0 auto'
-      }}>
-        <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 16 }}>
-          Ready to eat healthier?
+      <section style={{ textAlign: 'center', padding: '72px 24px 96px', maxWidth: 580, margin: '0 auto' }}>
+        <h2 style={{ fontFamily: serif, fontSize: 32, fontWeight: 600, marginBottom: 14 }}>
+          Ready for a healthier feed?
         </h2>
-        <p style={{
-          color: 'rgba(255,255,255,0.5)',
-          fontSize: 16,
-          marginBottom: 40,
-          lineHeight: 1.7
-        }}>
-          Join people who are taking control of what they feed their minds every day.
+        <p style={{ color: 'oklch(96% 0.008 90 / 0.5)', fontSize: 16, marginBottom: 36, lineHeight: 1.7 }}>
+          Join people who are learning to feed their minds a little more intentionally, one day at a time.
         </p>
         <a
           href="https://chrome.google.com/webstore"
           target="_blank"
           rel="noreferrer"
           style={{
-            background: 'linear-gradient(135deg, #00c896, #00a57a)',
-            color: 'white',
-            padding: '16px 40px',
+            background: accent,
+            color: accentDark,
+            padding: '16px 38px',
             borderRadius: 10,
             fontSize: 16,
             fontWeight: 700,
             textDecoration: 'none',
-            display: 'inline-block'
+            display: 'inline-block',
           }}
         >
           Add to Chrome
         </a>
       </section>
 
-      {/* Footer */}
-      <footer style={{
-        borderTop: '1px solid rgba(255,255,255,0.06)',
-        padding: '32px 40px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: 16
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 18 }}>🥗</span>
-          <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13 }}>
+      <footer
+        style={{
+          borderTop: '1px solid oklch(96% 0.008 90 / 0.06)',
+          padding: '32px 48px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 16,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ width: 16, height: 16, borderRadius: '50%', background: 'oklch(58% 0.13 155 / 0.6)', display: 'inline-block' }} />
+          <span style={{ color: 'oklch(96% 0.008 90 / 0.3)', fontSize: 13 }}>
             © {new Date().getFullYear()} InfoDiet. All rights reserved.
           </span>
         </div>
         <div style={{ display: 'flex', gap: 24 }}>
-          <Link href="/privacy" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, textDecoration: 'none' }}>
+          <Link href="/privacy" style={{ color: 'oklch(96% 0.008 90 / 0.3)', fontSize: 13, textDecoration: 'none' }}>
             Privacy Policy
           </Link>
-          <Link href="/terms" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, textDecoration: 'none' }}>
+          <Link href="/terms" style={{ color: 'oklch(96% 0.008 90 / 0.3)', fontSize: 13, textDecoration: 'none' }}>
             Terms of Service
           </Link>
         </div>
       </footer>
-
     </main>
   );
 }
