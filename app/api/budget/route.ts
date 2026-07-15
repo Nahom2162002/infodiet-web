@@ -9,6 +9,13 @@ const corsHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
+// Daily budgets are a Pro feature — free users get unlimited (-1) budgets
+// for every category, which the extension already treats as "don't block".
+const UNLIMITED_BUDGETS = {
+    news: -1, social: -1, entertainment: -1, educational: -1,
+    shopping: -1, forums: -1, gaming: -1, other: -1
+};
+
 export async function OPTIONS() {
     return new NextResponse(null, { status: 204, headers: corsHeaders });
 }
@@ -19,6 +26,10 @@ export async function GET(req: NextRequest) {
         await connectDB();
         const user = await getUserFromRequest(req);
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
+
+        if (user.plan !== 'pro') {
+            return NextResponse.json({ budgets: UNLIMITED_BUDGETS, locked: true }, { headers: corsHeaders });
+        }
 
         let budget = await Budget.findOne({ userId: user._id });
 
@@ -40,6 +51,10 @@ export async function PUT(req: NextRequest) {
         await connectDB();
         const user = await getUserFromRequest(req);
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
+
+        if (user.plan !== 'pro') {
+            return NextResponse.json({ error: 'Upgrade to Pro to set custom budgets' }, { status: 403, headers: corsHeaders });
+        }
 
         const { budgets } = await req.json();
 

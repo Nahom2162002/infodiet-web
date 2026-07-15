@@ -13,6 +13,7 @@ export default function BudgetPage() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [token, setToken] = useState('');
+    const [locked, setLocked] = useState(false);
 
     useEffect(() => {
         const t = new URLSearchParams(window.location.search).get('token');
@@ -28,8 +29,12 @@ export default function BudgetPage() {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.budgets) setBudgets(data.budgets);
-                else setError(data.error);
+                if (data.budgets) {
+                    setBudgets(data.budgets);
+                    setLocked(!!data.locked);
+                } else {
+                    setError(data.error);
+                }
                 setLoading(false);
             })
             .catch(() => {
@@ -115,8 +120,49 @@ export default function BudgetPage() {
                 </p>
             </div>
 
+            {locked && (
+                <div style={{
+                    background: 'linear-gradient(135deg, rgba(0,200,150,0.08), rgba(0,165,122,0.05))',
+                    border: '1px solid rgba(0,200,150,0.25)',
+                    borderRadius: 16,
+                    padding: '24px 20px',
+                    textAlign: 'center',
+                    marginBottom: 24
+                }}>
+                    <p style={{ fontSize: 28, margin: '0 0 8px' }}>⭐</p>
+                    <h2 style={{ color: 'white', fontSize: 18, fontWeight: 700, margin: '0 0 8px' }}>
+                        Daily budgets are a Pro feature
+                    </h2>
+                    <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, margin: '0 0 20px', lineHeight: 1.6 }}>
+                        Upgrade to set per-category time limits and have InfoDiet block access automatically once you hit them.
+                    </p>
+                    <a
+                        href="/#pricing"
+                        style={{
+                            display: 'inline-block',
+                            padding: '10px 24px',
+                            borderRadius: 8,
+                            background: 'linear-gradient(135deg, #00c896, #00a57a)',
+                            color: 'white',
+                            textDecoration: 'none',
+                            fontSize: 14,
+                            fontWeight: 700
+                        }}
+                    >
+                        See Pro pricing
+                    </a>
+                </div>
+            )}
+
             {/* Category budgets */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 32 }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 16,
+                marginBottom: 32,
+                opacity: locked ? 0.4 : 1,
+                pointerEvents: locked ? 'none' : 'auto'
+            }}>
                 {Object.entries(CATEGORIES).map(([key, cat]) => {
                     const budget = budgets[key] ?? cat.defaultBudget;
                     const isUnlimited = budget === -1;
@@ -212,27 +258,29 @@ export default function BudgetPage() {
             {error && <p style={{ color: '#ff6b6b', textAlign: 'center', marginBottom: 12 }}>{error}</p>}
             {success && <p style={{ color: '#00c896', textAlign: 'center', marginBottom: 12 }}>{success}</p>}
 
-            <button
-                onClick={handleSave}
-                disabled={saving}
-                style={{
-                    width: '100%',
-                    maxWidth: 400,
-                    display: 'block',
-                    margin: '0 auto',
-                    padding: '14px',
-                    borderRadius: 10,
-                    border: 'none',
-                    background: 'linear-gradient(135deg, #00c896, #00a57a)',
-                    color: 'white',
-                    fontSize: 15,
-                    fontWeight: 700,
-                    cursor: saving ? 'not-allowed' : 'pointer',
-                    opacity: saving ? 0.7 : 1
-                }}
-            >
-                {saving ? 'Saving...' : 'Save Budgets'}
-            </button>
+            {!locked && (
+                <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    style={{
+                        width: '100%',
+                        maxWidth: 400,
+                        display: 'block',
+                        margin: '0 auto',
+                        padding: '14px',
+                        borderRadius: 10,
+                        border: 'none',
+                        background: 'linear-gradient(135deg, #00c896, #00a57a)',
+                        color: 'white',
+                        fontSize: 15,
+                        fontWeight: 700,
+                        cursor: saving ? 'not-allowed' : 'pointer',
+                        opacity: saving ? 0.7 : 1
+                    }}
+                >
+                    {saving ? 'Saving...' : 'Save Budgets'}
+                </button>
+            )}
         </div>
     );
 }
