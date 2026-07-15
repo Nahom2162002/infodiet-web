@@ -20,6 +20,10 @@ export async function GET(req: NextRequest) {
         const user = await getUserFromRequest(req);
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
 
+        if (user.plan !== 'pro') {
+            return NextResponse.json({ error: 'Upgrade to Pro to view your dashboard', locked: true }, { status: 403, headers: corsHeaders });
+        }
+
         const today = new Date().toISOString().split('T')[0];
 
         // Get last 7 days
@@ -63,10 +67,13 @@ export async function GET(req: NextRequest) {
             };
         }).reverse();
 
-        // Calculate information quality score (0-100)
+        // Calculate information quality score (0-100) — educational vs
+        // entertainment ratio, not a share of total browsing.
         const totalMinutes = Object.values(weeklyConsumption).reduce((a, b) => a + b, 0);
         const educationalMinutes = weeklyConsumption.educational || 0;
-        const qualityScore = totalMinutes > 0 ? Math.round((educationalMinutes / totalMinutes) * 100) : 0;
+        const entertainmentMinutes = weeklyConsumption.entertainment || 0;
+        const qualityDenominator = educationalMinutes + entertainmentMinutes;
+        const qualityScore = qualityDenominator > 0 ? Math.round((educationalMinutes / qualityDenominator) * 100) : 0;
 
         // Budget status — which categories are over budget today
         const budgets = budget?.budgets || {};

@@ -78,6 +78,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function DashboardPage() {
     const [stats, setStats] = useState<Stats | null>(null);
     const [error, setError] = useState('');
+    const [locked, setLocked] = useState(false);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'today' | 'week'>('today');
 
@@ -94,7 +95,8 @@ export default function DashboardPage() {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.error) setError(data.error);
+                if (data.locked) setLocked(true);
+                else if (data.error) setError(data.error);
                 else setStats(data);
                 setLoading(false);
             })
@@ -108,6 +110,42 @@ export default function DashboardPage() {
         <div style={{ ...styles.container, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
             <div style={styles.spinner} />
             <p style={{ color: 'rgba(255,255,255,0.5)' }}>Loading your information diet...</p>
+        </div>
+    );
+
+    if (locked) return (
+        <div style={{ ...styles.container, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{
+                background: 'linear-gradient(135deg, rgba(0,200,150,0.08), rgba(0,165,122,0.05))',
+                border: '1px solid rgba(0,200,150,0.25)',
+                borderRadius: 16,
+                padding: '32px 28px',
+                textAlign: 'center',
+                maxWidth: 380
+            }}>
+                <p style={{ fontSize: 32, margin: '0 0 8px' }}>⭐</p>
+                <h2 style={{ color: 'white', fontSize: 18, fontWeight: 700, margin: '0 0 8px' }}>
+                    The dashboard is a Pro feature
+                </h2>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, margin: '0 0 20px', lineHeight: 1.6 }}>
+                    Upgrade to see your weekly trends, information quality score, and budget status charts.
+                </p>
+                <a
+                    href="/#pricing"
+                    style={{
+                        display: 'inline-block',
+                        padding: '10px 24px',
+                        borderRadius: 8,
+                        background: 'linear-gradient(135deg, #00c896, #00a57a)',
+                        color: 'white',
+                        textDecoration: 'none',
+                        fontSize: 14,
+                        fontWeight: 700
+                    }}
+                >
+                    See Pro pricing
+                </a>
+            </div>
         </div>
     );
 
