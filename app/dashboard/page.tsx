@@ -3,10 +3,29 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CATEGORY_META, CATEGORY_ORDER } from '../categoryMeta';
 
+interface DailyTotal {
+    date: string;
+    minutes: number;
+    educational: number;
+    entertainment: number;
+    social: number;
+    news: number;
+}
+
+interface BudgetStatusEntry {
+    category: string;
+    minutes: number;
+    limit: number;
+    overBudget: boolean;
+    percentage: number;
+}
+
 interface Stats {
     todayConsumption: Record<string, number>;
     weeklyConsumption: Record<string, number>;
+    dailyTotals: DailyTotal[];
     qualityScore: number;
+    budgetStatus: BudgetStatusEntry[];
     budgets: Record<string, number>;
     totalMinutesToday: number;
     totalMinutesWeek: number;
@@ -184,7 +203,8 @@ export default function DashboardPage() {
     const isWeek = view === 'week';
     const consumption = isWeek ? stats.weeklyConsumption : stats.todayConsumption;
     const categories = buildCategories(consumption, stats.budgets, isWeek);
-    const overBudgetCount = categories.filter(c => c.status === 'over').length;
+    const overBudgetCount = stats.budgetStatus.filter(b => b.overBudget).length;
+    const maxDailyMinutes = Math.max(...stats.dailyTotals.map(d => d.minutes), 1);
 
     return (
         <div style={shellStyle}>
@@ -282,6 +302,26 @@ export default function DashboardPage() {
                             {tab === 'today' ? "Today's Diet" : 'Weekly Overview'}
                         </div>
                     ))}
+                </div>
+
+                {/* 7-day trend */}
+                <div style={{ background: cardBg, border: '1px solid oklch(1 0 0 / 0.07)', borderRadius: 20, padding: 28 }}>
+                    <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 24 }}>7-Day Trend</div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 160, borderLeft: '1px solid oklch(1 0 0 / 0.1)', borderBottom: '1px solid oklch(1 0 0 / 0.1)', padding: '0 8px' }}>
+                        {stats.dailyTotals.map((day, i) => (
+                            <div key={i} title={`${fmt(day.minutes)} on ${day.date}`} style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'flex-end' }}>
+                                <div style={{ width: '100%', borderRadius: '6px 6px 0 0', background: GREEN, height: `${Math.max(4, (day.minutes / maxDailyMinutes) * 100)}%` }} />
+                            </div>
+                        ))}
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, padding: '0 8px', marginTop: 8 }}>
+                        {stats.dailyTotals.map((day, i) => (
+                            <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                                <div style={{ fontSize: 10, color: dim }}>{day.date}</div>
+                                <div style={{ fontSize: 10, color: dim, fontVariantNumeric: 'tabular-nums' }}>{fmt(day.minutes)}</div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Breakdown chart */}
