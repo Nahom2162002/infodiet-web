@@ -2,14 +2,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const categories = [
-  { label: 'News & Politics', hue: 25, pct: 62 },
-  { label: 'Social Media', hue: 85, pct: 78 },
-  { label: 'Entertainment', hue: 50, pct: 55 },
-  { label: 'Educational', hue: 150, pct: 41 },
-  { label: 'Shopping', hue: 300, pct: 20 },
-  { label: 'Forums', hue: 230, pct: 33 },
-  { label: 'Gaming', hue: 340, pct: 15 },
-  { label: 'Other', hue: 0, pct: 8 },
+  { label: 'News & Politics', hue: 250, pct: 62 },
+  { label: 'Social Media', hue: 320, pct: 78 },
+  { label: 'Entertainment', hue: 300, pct: 55 },
+  { label: 'Educational', hue: 140, pct: 41 },
+  { label: 'Shopping', hue: 70, pct: 20 },
+  { label: 'Forums & Communities', hue: 200, pct: 33 },
+  { label: 'Gaming', hue: 280, pct: 15 },
+  { label: 'Other', hue: 230, pct: 8 },
 ].map((c) => ({
   ...c,
   color: `oklch(65% 0.09 ${c.hue})`,
