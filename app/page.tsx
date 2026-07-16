@@ -223,7 +223,7 @@ export default function LandingPage() {
                 display: 'inline-block',
               }}
             >
-              Add to Chrome — it&apos;s free
+              Add to Chrome
             </a>
             <a
               href="#how-it-works"
