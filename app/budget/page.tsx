@@ -33,15 +33,6 @@ export default function BudgetPage() {
     const [saved, setSaved] = useState(false);
     const [token, setToken] = useState('');
     const [locked, setLocked] = useState(false);
-    const [closeBlocked, setCloseBlocked] = useState(false);
-
-    const handleClose = () => {
-        // window.close() only works on tabs a script opened. If the extension
-        // opened this tab via chrome.tabs.create, the browser silently ignores
-        // it — detect that and fall back to telling the user what to do.
-        window.close();
-        setTimeout(() => setCloseBlocked(true), 400);
-    };
 
     useEffect(() => {
         const t = new URLSearchParams(window.location.search).get('token');
@@ -150,22 +141,10 @@ export default function BudgetPage() {
             <div style={{ width: '100%', maxWidth: 760, display: 'flex', flexDirection: 'column', gap: 22 }}>
 
                 {/* Top nav */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
                     <Link href={`/dashboard?token=${token}`} style={{ fontSize: 14, fontWeight: 600, textDecoration: 'none', color: GREEN }}>
                         &larr; Back to Dashboard
                     </Link>
-                    {closeBlocked ? (
-                        <span style={{ fontSize: 14, fontWeight: 600, color: dim }}>
-                            You can close this tab now
-                        </span>
-                    ) : (
-                        <button
-                            onClick={handleClose}
-                            style={{ fontSize: 14, fontWeight: 600, textDecoration: 'none', color: GREEN, border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}
-                        >
-                            Close &amp; back to extension &rarr;
-                        </button>
-                    )}
                 </div>
 
                 {/* Header */}
