@@ -280,6 +280,26 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
+                {/* 7-day trend */}
+                <div style={{ background: cardBg, border: '1px solid oklch(1 0 0 / 0.07)', borderRadius: 20, padding: 28 }}>
+                    <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 24 }}>7-Day Trend</div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 160, borderLeft: '1px solid oklch(1 0 0 / 0.1)', borderBottom: '1px solid oklch(1 0 0 / 0.1)', padding: '0 8px' }}>
+                        {stats.dailyTotals.map((day, i) => (
+                            <div key={i} title={`${fmt(day.minutes)} on ${day.date}`} style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'flex-end' }}>
+                                <div style={{ width: '100%', borderRadius: '6px 6px 0 0', background: GREEN, height: `${Math.max(4, (day.minutes / maxDailyMinutes) * 100)}%` }} />
+                            </div>
+                        ))}
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, padding: '0 8px', marginTop: 8 }}>
+                        {stats.dailyTotals.map((day, i) => (
+                            <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                                <div style={{ fontSize: 10, color: dim }}>{day.date}</div>
+                                <div style={{ fontSize: 10, color: dim, fontVariantNumeric: 'tabular-nums' }}>{fmt(day.minutes)}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Tabs */}
                 <div style={{ display: 'flex', background: 'oklch(1 0 0 / 0.05)', padding: 4, borderRadius: 12, gap: 4 }}>
                     {(['today', 'week'] as const).map(tab => (
@@ -302,26 +322,6 @@ export default function DashboardPage() {
                             {tab === 'today' ? "Today's Diet" : 'Weekly Overview'}
                         </div>
                     ))}
-                </div>
-
-                {/* 7-day trend */}
-                <div style={{ background: cardBg, border: '1px solid oklch(1 0 0 / 0.07)', borderRadius: 20, padding: 28 }}>
-                    <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 24 }}>7-Day Trend</div>
-                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 160, borderLeft: '1px solid oklch(1 0 0 / 0.1)', borderBottom: '1px solid oklch(1 0 0 / 0.1)', padding: '0 8px' }}>
-                        {stats.dailyTotals.map((day, i) => (
-                            <div key={i} title={`${fmt(day.minutes)} on ${day.date}`} style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'flex-end' }}>
-                                <div style={{ width: '100%', borderRadius: '6px 6px 0 0', background: GREEN, height: `${Math.max(4, (day.minutes / maxDailyMinutes) * 100)}%` }} />
-                            </div>
-                        ))}
-                    </div>
-                    <div style={{ display: 'flex', gap: 8, padding: '0 8px', marginTop: 8 }}>
-                        {stats.dailyTotals.map((day, i) => (
-                            <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                                <div style={{ fontSize: 10, color: dim }}>{day.date}</div>
-                                <div style={{ fontSize: 10, color: dim, fontVariantNumeric: 'tabular-nums' }}>{fmt(day.minutes)}</div>
-                            </div>
-                        ))}
-                    </div>
                 </div>
 
                 {/* Breakdown chart */}
