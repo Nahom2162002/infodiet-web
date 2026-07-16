@@ -76,7 +76,11 @@ export async function GET(req: NextRequest) {
         const qualityScore = qualityDenominator > 0 ? Math.round((educationalMinutes / qualityDenominator) * 100) : 0;
 
         // Budget status — which categories are over budget today
-        const budgets = budget?.budgets || {};
+        const DEFAULT_BUDGETS: Record<string, number> = {
+            news: 20, social: 30, entertainment: 60, educational: -1,
+            shopping: 15, forums: 20, gaming: 30, other: -1
+        };
+        const budgets: Record<string, number> = { ...DEFAULT_BUDGETS, ...(budget?.budgets || {}) };
         const budgetStatus = Object.entries(todayConsumption).map(([category, minutes]) => {
             const limit = budgets[category] ?? -1;
             return {
@@ -94,6 +98,7 @@ export async function GET(req: NextRequest) {
             dailyTotals,
             qualityScore,
             budgetStatus,
+            budgets,
             totalMinutesToday: Math.round(Object.values(todayConsumption).reduce((a, b) => a + b, 0)),
             totalMinutesWeek: Math.round(totalMinutes)
         }, { headers: corsHeaders });
