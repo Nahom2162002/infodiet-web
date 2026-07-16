@@ -82,6 +82,15 @@ export default function DashboardPage() {
     const [loading, setLoading] = useState(true);
     const [view, setView] = useState<'today' | 'week'>('today');
     const [token, setToken] = useState('');
+    const [closeBlocked, setCloseBlocked] = useState(false);
+
+    const handleClose = () => {
+        // window.close() only works on tabs a script opened. If the extension
+        // opened this tab via chrome.tabs.create, the browser silently ignores
+        // it — detect that and fall back to telling the user what to do.
+        window.close();
+        setTimeout(() => setCloseBlocked(true), 400);
+    };
 
     useEffect(() => {
         const t = new URLSearchParams(window.location.search).get('token');
@@ -192,12 +201,18 @@ export default function DashboardPage() {
 
                 {/* Header */}
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, textAlign: 'center', paddingTop: 8 }}>
-                    <button
-                        onClick={() => window.close()}
-                        style={{ border: 'none', background: 'transparent', color: GREEN, fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', padding: 0 }}
-                    >
-                        &larr; Close &amp; back to extension
-                    </button>
+                    {closeBlocked ? (
+                        <span style={{ color: dim, fontSize: 13, fontWeight: 600 }}>
+                            You can close this tab now
+                        </span>
+                    ) : (
+                        <button
+                            onClick={handleClose}
+                            style={{ border: 'none', background: 'transparent', color: GREEN, fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', padding: 0 }}
+                        >
+                            &larr; Close &amp; back to extension
+                        </button>
+                    )}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 6 }}>
                         <div style={{
                             width: 34, height: 34, borderRadius: 10,
