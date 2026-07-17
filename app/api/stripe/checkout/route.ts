@@ -17,6 +17,7 @@ export async function OPTIONS() {
 export async function POST(req: NextRequest) {
     try {
         await connectDB();
+        const { hasHadTrial } = await req.json();
         const user = await getUserFromRequest(req);
         if (!user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
@@ -46,25 +47,31 @@ export async function POST(req: NextRequest) {
             await User.findByIdAndUpdate(user._id, { stripeCustomerId: customer.id });
         }
 
-        const session = await stripe.checkout.sessions.create({
+        const sessionConfig: any = {
             customer: customerId,
             line_items: [{
                 price: process.env.STRIPE_PRICE_ID!,
                 quantity: 1
             }],
             mode: 'subscription',
-            subscription_data: {
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
+        };
+
+        // Only add trial if user hasn't had one before
+        if (!hasHadTrial) {
+            sessionConfig.subscription_data = {
                 trial_period_days: 7,
                 trial_settings: {
                     end_behavior: {
                         missing_payment_method: 'cancel'
                     }
                 }
-            },
-            payment_method_collection: 'if_required',
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
-        });
+            };
+            sessionConfig.payment_method_collection = 'if_required';
+        }
+
+        const session = await stripe.checkout.sessions.create(sessionConfig);
 
         return NextResponse.json({ url: session.url }, { headers: corsHeaders });
     } catch (err: any) {
