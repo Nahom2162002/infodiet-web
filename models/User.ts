@@ -9,7 +9,11 @@ const userSchema = new Schema({
     resetTokenExpiry:   { type: Date },
     createdAt:          { type: Date, default: Date.now },
     plan:               { type: String, enum: ['free', 'pro'], default: 'free' },
-    stripeCustomerId:   { type: String }
+    stripeCustomerId:   { type: String },
+    cancelAtPeriodEnd: { type: Boolean, default: false },
+    isTrialing:  { type: Boolean, default: false },
+    trialEnd:    { type: Date, default: null },
+    hasHadTrial: { type: Boolean, default: false }
 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);

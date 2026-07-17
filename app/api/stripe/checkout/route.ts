@@ -22,23 +22,21 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
         }
 
-        // Already pro — no need to charge again
         if (user.plan === 'pro') {
             return NextResponse.json({ error: 'Already on Pro plan' }, { status: 400, headers: corsHeaders });
         }
 
-        // Create Stripe customer if one doesn't exist
+        // Create or verify Stripe customer
         let customerId = user.stripeCustomerId;
         if (customerId) {
-        // Verify the customer actually exists in Stripe
             try {
                 await stripe.customers.retrieve(customerId);
             } catch {
-                // Customer doesn't exist — create a new one
                 console.log('Customer not found in Stripe, creating new one');
                 customerId = null;
             }
         }
+
         if (!customerId) {
             const customer = await stripe.customers.create({
                 email: user.email,
@@ -48,14 +46,22 @@ export async function POST(req: NextRequest) {
             await User.findByIdAndUpdate(user._id, { stripeCustomerId: customer.id });
         }
 
-        // Create one-time payment session
         const session = await stripe.checkout.sessions.create({
             customer: customerId,
             line_items: [{
                 price: process.env.STRIPE_PRICE_ID!,
                 quantity: 1
             }],
-            mode: 'payment',
+            mode: 'subscription',
+            subscription_data: {
+                trial_period_days: 7,
+                trial_settings: {
+                    end_behavior: {
+                        missing_payment_method: 'cancel'
+                    }
+                }
+            },
+            payment_method_collection: 'if_required',
             success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
         });

@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
     const sig = req.headers.get('stripe-signature');
 
     if (!sig) {
-        console.log('No signature - returning 400');
         return NextResponse.json({ error: 'No signature' }, { status: 400 });
     }
 
@@ -35,36 +34,47 @@ export async function POST(req: NextRequest) {
             await mongoose.connect(process.env.MONGODB_URI!);
         }
 
-        // One-time payment completed — set plan to pro
-        if (event.type === 'checkout.session.completed') {
-            const session = event.data.object as any;
-            console.log('checkout.session.completed - customer:', session.customer);
-            console.log('payment_status:', session.payment_status);
-
-            // Only upgrade if payment was successful
-            if (session.payment_status === 'paid') {
-                const updated = await User.findOneAndUpdate(
-                    { stripeCustomerId: session.customer },
-                    { $set: { plan: 'pro' } },
+        // Trial started — set plan to pro
+        if (event.type === 'customer.subscription.created') {
+            const subscription = event.data.object as any;
+            if (subscription.status === 'trialing') {
+                await User.findOneAndUpdate(
+                    { stripeCustomerId: subscription.customer },
+                    { $set: { 
+                        plan: 'pro',
+                        isTrialing: true,
+                        trialEnd: new Date(subscription.trial_end * 1000),
+                        hasHadTrial: true
+                    }},
                     { returnDocument: 'after' }
                 );
-                console.log('Plan set to pro for:', updated?.username);
             }
         }
 
-        // Payment intent succeeded — backup handler
-        if (event.type === 'payment_intent.succeeded') {
-            const paymentIntent = event.data.object as any;
-            console.log('payment_intent.succeeded - customer:', paymentIntent.customer);
+        // Payment succeeded — set plan to pro
+        if (event.type === 'invoice.paid') {
+            const invoice = event.data.object as any;
+            console.log('invoice.paid - customer:', invoice.customer);
 
-            if (paymentIntent.customer) {
-                const updated = await User.findOneAndUpdate(
-                    { stripeCustomerId: paymentIntent.customer },
-                    { $set: { plan: 'pro' } },
-                    { returnDocument: 'after' }
-                );
-                console.log('Backup handler - plan set to pro for:', updated?.username);
-            }
+            const updated = await User.findOneAndUpdate(
+                { stripeCustomerId: invoice.customer },
+                { $set: { plan: 'pro' } },
+                { returnDocument: 'after' }
+            );
+            console.log('invoice.paid - updated:', updated?.username, updated?.plan);
+        }
+
+        // Subscription cancelled — set plan to free
+        if (event.type === 'customer.subscription.deleted') {
+            const subscription = event.data.object as any;
+            console.log('subscription.deleted - customer:', subscription.customer);
+
+            const updated = await User.findOneAndUpdate(
+                { stripeCustomerId: subscription.customer },
+                { $set: { plan: 'free' } },
+                { returnDocument: 'after' }
+            );
+            console.log('Plan set to free for:', updated?.username);
         }
 
     } catch (err: any) {
