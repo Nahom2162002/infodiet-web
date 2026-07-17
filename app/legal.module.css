@@ -1,0 +1,44 @@
+.main {
+  padding: 60px 24px 100px;
+}
+
+.title {
+  font-size: 34px;
+}
+
+.section {
+  margin-bottom: 36px;
+  padding-bottom: 36px;
+}
+
+.sectionTitle {
+  font-size: 19px;
+}
+
+.body {
+  font-size: 15px;
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding: 40px 18px 72px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .section {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+  }
+
+  .sectionTitle {
+    font-size: 17px;
+  }
+
+  .body {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+}

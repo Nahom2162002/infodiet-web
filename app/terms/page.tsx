@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import styles from '../legal.module.css';
 
 const bg = 'oklch(20% 0.025 155)';
 const fg = 'oklch(96% 0.008 90)';
@@ -94,12 +95,12 @@ We reserve the right to suspend or terminate accounts that violate these terms.`
 export default function TermsOfService() {
   return (
     <main
+      className={styles.main}
       style={{
         fontFamily: sans,
         background: bg,
         minHeight: '100vh',
         color: fg,
-        padding: '60px 24px 100px',
       }}
     >
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -118,7 +119,7 @@ export default function TermsOfService() {
           Back to InfoDiet
         </Link>
 
-        <h1 style={{ fontFamily: serif, fontSize: 34, fontWeight: 600, margin: '32px 0 8px', color: 'oklch(97% 0.006 90)' }}>
+        <h1 className={styles.title} style={{ fontFamily: serif, fontWeight: 600, margin: '32px 0 8px', color: 'oklch(97% 0.006 90)' }}>
           Terms of Service
         </h1>
         <p style={{ color: 'oklch(96% 0.008 90 / 0.4)', fontSize: 14, marginBottom: 48 }}>
@@ -128,19 +129,18 @@ export default function TermsOfService() {
         {sections.map((section) => (
           <div
             key={section.title}
+            className={styles.section}
             style={{
-              marginBottom: 36,
-              paddingBottom: 36,
               borderBottom: '1px solid oklch(96% 0.008 90 / 0.07)',
             }}
           >
-            <h2 style={{ fontFamily: serif, fontSize: 19, fontWeight: 600, marginBottom: 12, color: 'oklch(97% 0.006 90)' }}>
+            <h2 className={styles.sectionTitle} style={{ fontFamily: serif, fontWeight: 600, marginBottom: 12, color: 'oklch(97% 0.006 90)' }}>
               {section.title}
             </h2>
             <p
+              className={styles.body}
               style={{
                 color: 'oklch(96% 0.008 90 / 0.6)',
-                fontSize: 15,
                 lineHeight: 1.8,
                 whiteSpace: 'pre-line',
                 margin: 0,

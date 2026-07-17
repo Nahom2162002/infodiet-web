@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import styles from './landing.module.css';
 
 const categories = [
   { label: 'News & Politics', hue: 250, pct: 62 },
@@ -105,11 +106,11 @@ export default function LandingPage() {
   return (
     <main style={{ fontFamily: sans, background: bg, minHeight: '100vh', color: fg }}>
       <nav
+        className={styles.nav}
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '20px 48px',
           borderBottom: '1px solid oklch(96% 0.008 90 / 0.08)',
         }}
       >
@@ -126,15 +127,17 @@ export default function LandingPage() {
           </span>
         </div>
         <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
-          <a href="#features" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
-            Features
-          </a>
-          <a href="#how-it-works" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
-            How it works
-          </a>
-          <a href="#pricing" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
-            Pricing
-          </a>
+          <div className={styles.navLinks}>
+            <a href="#features" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
+              Features
+            </a>
+            <a href="#how-it-works" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
+              How it works
+            </a>
+            <a href="#pricing" style={{ color: 'oklch(96% 0.008 90 / 0.6)', fontSize: 14, textDecoration: 'none' }}>
+              Pricing
+            </a>
+          </div>
           <a
             href="https://chrome.google.com/webstore"
             target="_blank"
@@ -147,6 +150,7 @@ export default function LandingPage() {
               fontSize: 14,
               fontWeight: 600,
               textDecoration: 'none',
+              whiteSpace: 'nowrap',
             }}
           >
             Add to Chrome
@@ -155,13 +159,11 @@ export default function LandingPage() {
       </nav>
 
       <section
+        className={styles.hero}
         style={{
           maxWidth: 1120,
           margin: '0 auto',
-          padding: '88px 48px 40px',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 64,
           alignItems: 'center',
         }}
       >
@@ -181,9 +183,9 @@ export default function LandingPage() {
             A gentler way to notice your screen habits
           </div>
           <h1
+            className={styles.heroTitle}
             style={{
               fontFamily: serif,
-              fontSize: 46,
               fontWeight: 600,
               lineHeight: 1.18,
               margin: '0 0 22px',
@@ -384,7 +386,7 @@ export default function LandingPage() {
         >
           Free to start. Upgrade when you&apos;re ready for the full toolkit.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+        <div className={styles.featuresGrid} style={{ display: 'grid', gap: 20 }}>
           {features.map((f) => (
             <div
               key={f.title}
@@ -462,7 +464,7 @@ export default function LandingPage() {
         <p style={{ textAlign: 'center', color: 'oklch(96% 0.008 90 / 0.5)', fontSize: 16, marginBottom: 52 }}>
           Start free. Upgrade when you&apos;re ready.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div className={styles.pricingGrid} style={{ display: 'grid', gap: 20 }}>
           <div
             style={{
               background: card,
@@ -610,9 +612,9 @@ export default function LandingPage() {
       </section>
 
       <footer
+        className={styles.footer}
         style={{
           borderTop: '1px solid oklch(96% 0.008 90 / 0.06)',
-          padding: '32px 48px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
