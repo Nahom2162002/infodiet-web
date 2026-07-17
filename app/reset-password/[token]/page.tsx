@@ -138,6 +138,7 @@ export default function ResetPasswordPage() {
                                     type="password"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && handleReset()}
                                     placeholder="Enter new password"
                                     style={inputStyle}
                                 />
@@ -166,6 +167,7 @@ export default function ResetPasswordPage() {
                                     type="password"
                                     value={confirm}
                                     onChange={e => setConfirm(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && handleReset()}
                                     placeholder="Confirm new password"
                                     style={inputStyle}
                                 />
