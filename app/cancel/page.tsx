@@ -52,7 +52,7 @@ export default function CancelPage() {
                     marginTop: 8,
                 }}>
                     <div style={{ fontSize: 14, lineHeight: 1.6, color: 'oklch(0.8 0.01 160)' }}>
-                        Changed your mind? You can start a new trial or upgrade to Pro anytime from the extension.
+                        Changed your mind? You can upgrade to Pro anytime from the extension.
                     </div>
                 </div>
             </div>
