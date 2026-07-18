@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import { getUserFromRequest } from '@/lib/auth';
 import Consumption from '@/models/Consumption';
+import { getLastNDateStrings } from '@/lib/date';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -22,13 +23,10 @@ export async function GET(req: NextRequest) {
 
         const { searchParams } = new URL(req.url);
         const days = parseInt(searchParams.get('days') || '7');
+        const timeZone = searchParams.get('tz') || 'UTC';
 
         // Get date range
-        const dates = Array.from({ length: days }, (_, i) => {
-            const d = new Date();
-            d.setDate(d.getDate() - i);
-            return d.toISOString().split('T')[0];
-        });
+        const dates = getLastNDateStrings(days, timeZone);
 
         const consumption = await Consumption.find({
             userId: user._id,

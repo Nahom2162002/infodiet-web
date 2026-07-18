@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/mongodb';
 import { getUserFromRequest } from '@/lib/auth';
 import Consumption from '@/models/Consumption';
 import Budget from '@/models/Budget';
+import { getLocalDateString, getLastNDateStrings } from '@/lib/date';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -24,14 +25,13 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: 'Upgrade to Pro to view your dashboard', locked: true }, { status: 403, headers: corsHeaders });
         }
 
-        const today = new Date().toISOString().split('T')[0];
+        const { searchParams } = new URL(req.url);
+        const timeZone = searchParams.get('tz') || 'UTC';
+
+        const today = getLocalDateString(new Date(), timeZone);
 
         // Get last 7 days
-        const dates = Array.from({ length: 7 }, (_, i) => {
-            const d = new Date();
-            d.setDate(d.getDate() - i);
-            return d.toISOString().split('T')[0];
-        });
+        const dates = getLastNDateStrings(7, timeZone);
 
         const [consumption, budget] = await Promise.all([
             Consumption.find({ userId: user._id, date: { $in: dates } }),
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
             const total = dayEntries.reduce((sum, e) => sum + e.minutes, 0);
             const d = new Date(date);
             return {
-                date: d.toLocaleDateString('en-US', { weekday: 'short' }),
+                date: d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' }),
                 minutes: Math.round(total),
                 educational: Math.round(dayEntries.filter(e => e.category === 'educational').reduce((sum, e) => sum + e.minutes, 0)),
                 entertainment: Math.round(dayEntries.filter(e => e.category === 'entertainment').reduce((sum, e) => sum + e.minutes, 0)),

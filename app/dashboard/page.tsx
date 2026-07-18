@@ -111,7 +111,8 @@ export default function DashboardPage() {
         }
         setToken(t);
 
-        fetch('/api/consumption/stats', {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        fetch(`/api/consumption/stats?tz=${encodeURIComponent(tz)}`, {
             headers: { authorization: `Bearer ${t}` }
         })
             .then(res => res.json())
