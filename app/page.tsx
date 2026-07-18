@@ -541,9 +541,9 @@ export default function LandingPage() {
               MOST POPULAR
             </div>
             <h3 style={{ fontSize: 19, fontWeight: 700, margin: '0 0 8px' }}>Pro</h3>
-            <p style={{ fontSize: 34, fontWeight: 700, margin: '0 0 4px', fontFamily: serif }}>$9.99</p>
+            <p style={{ fontSize: 34, fontWeight: 700, margin: '0 0 4px', fontFamily: serif }}>$3.00/month</p>
             <p style={{ color: 'oklch(96% 0.008 90 / 0.4)', fontSize: 13, margin: '0 0 26px' }}>
-              Launch price, lifetime access
+              7-day free trial · cancel anytime
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {proItems.map((item) => (
