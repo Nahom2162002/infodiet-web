@@ -139,7 +139,7 @@ export default function LandingPage() {
             </a>
           </div>
           <a
-            href="https://chrome.google.com/webstore"
+            href="https://chromewebstore.google.com/detail/infodiet/ccpifliaifaalcknogjdkppmilganoam"
             target="_blank"
             rel="noreferrer"
             style={{
@@ -211,7 +211,7 @@ export default function LandingPage() {
           </p>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <a
-              href="https://chrome.google.com/webstore"
+              href="https://chromewebstore.google.com/detail/infodiet/ccpifliaifaalcknogjdkppmilganoam"
               target="_blank"
               rel="noreferrer"
               style={{
@@ -494,7 +494,7 @@ export default function LandingPage() {
               ))}
             </div>
             <a
-              href="https://chrome.google.com/webstore"
+              href="https://chromewebstore.google.com/detail/infodiet/ccpifliaifaalcknogjdkppmilganoam"
               target="_blank"
               rel="noreferrer"
               style={{
@@ -563,7 +563,7 @@ export default function LandingPage() {
               ))}
             </div>
             <a
-              href="https://chrome.google.com/webstore"
+              href="https://chromewebstore.google.com/detail/infodiet/ccpifliaifaalcknogjdkppmilganoam"
               target="_blank"
               rel="noreferrer"
               style={{
@@ -593,7 +593,7 @@ export default function LandingPage() {
           Join people who are learning to feed their minds a little more intentionally, one day at a time.
         </p>
         <a
-          href="https://chrome.google.com/webstore"
+          href="https://chromewebstore.google.com/detail/infodiet/ccpifliaifaalcknogjdkppmilganoam"
           target="_blank"
           rel="noreferrer"
           style={{
